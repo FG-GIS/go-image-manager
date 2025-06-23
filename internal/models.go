@@ -23,11 +23,11 @@ type ImgExt struct {
 	Status bool
 }
 
-func GetExtensionsList(enebled []string) []ImgExt {
+func GetExtensionsList(enabled []string) []ImgExt {
 	var list []ImgExt
 	var statusFlag = false
 
-	if len(enebled) == 0 {
+	if len(enabled) == 0 {
 		statusFlag = true
 	}
 
@@ -40,8 +40,8 @@ func GetExtensionsList(enebled []string) []ImgExt {
 		)
 	}
 
-	if len(enebled) > 0 {
-		for _, ext := range enebled {
+	if len(enabled) > 0 {
+		for _, ext := range enabled {
 			for i := range list {
 				if ext == list[i].Name {
 					list[i].Status = true
