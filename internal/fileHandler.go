@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"path/filepath"
 	"slices"
+	"strings"
 )
 
 func FileScanner(root string, exclusions []string) []string {
@@ -15,7 +16,8 @@ func FileScanner(root string, exclusions []string) []string {
 			fmt.Printf("Error accessing %q: %v\n", path, err)
 			return nil
 		}
-		if d.IsDir() && slices.Contains(exclusions, d.Name()) {
+		name := strings.ToLower(d.Name())
+		if d.IsDir() && slices.Contains(exclusions, name) {
 			fmt.Printf("Skipping directory %q due to exclusion\n", path)
 			return filepath.SkipDir
 		}
@@ -24,7 +26,7 @@ func FileScanner(root string, exclusions []string) []string {
 			resultList = append(resultList, path)
 		}
 
-		// qui si può inserire la logica per controllare id metadati dei file
+		// qui si può inserire la logica per controllare i metadati dei file
 		// bisogna in ogni caso controllare l'estensione e creare una lista
 		// si potrà ampliare dopo inserendola nella struct
 		// volendo a questo stato si possono raccogliere tutti i file senza filtrare per estensione
