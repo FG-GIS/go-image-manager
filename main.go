@@ -23,19 +23,20 @@ func (s *stringSlice) Set(v string) error {
 func main() {
 	verbose := flag.Bool("verbose", false, "Abilita l'output dettagliato")
 
-	flist := flag.Bool("flist", false, "Stampa i formati accettati")
+	flist := flag.Bool("flist", false, "Stampa le estensioni accettate")
 
 	path := flag.String("path", ".", "tha path to scan for duplicate images")
 	// exclude := flag.String("exclude", "", "name folders you want to exclude")
 	var exclude stringSlice
-	var ext stringSlice
+	var ext stringSlice = internal.Extensions
+
 	flag.Var(&exclude, "exclude", "Nome di cartelle da escludere nella scansione, separate da una virgola (ex.: whatsapp,video)")
 	flag.Var(&ext, "ext", "Estensioni immagini da verificare, separate da una virgola (ex.: .jpg,.png)")
 
 	flag.Parse()
 
 	if *flist {
-		fmt.Println("Available extensions are:\n", internal.Extensions)
+		fmt.Println("Available extensions are:\n", ext)
 	}
 
 	args := flag.Args()

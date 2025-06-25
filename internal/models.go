@@ -18,7 +18,7 @@ type FileData struct {
 	Location string
 }
 
-func GetExtensionsList(enabled []string) map[string]bool {
+func GetExtensionsMap(enabled []string) map[string]bool {
 	result := make(map[string]bool)
 
 	for _, v := range enabled {
