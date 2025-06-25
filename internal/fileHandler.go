@@ -14,7 +14,7 @@ func FileScanner(root string, exclusions []string) []string {
 	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			fmt.Printf("Error accessing %q: %v\n", path, err)
-			return nil
+			return err
 		}
 		name := strings.ToLower(d.Name())
 		if d.IsDir() && slices.Contains(exclusions, name) {
@@ -25,12 +25,6 @@ func FileScanner(root string, exclusions []string) []string {
 		if !d.IsDir() {
 			resultList = append(resultList, path)
 		}
-
-		// qui si può inserire la logica per controllare i metadati dei file
-		// bisogna in ogni caso controllare l'estensione e creare una lista
-		// si potrà ampliare dopo inserendola nella struct
-		// volendo a questo stato si possono raccogliere tutti i file senza filtrare per estensione
-
 		return nil
 	})
 	if err != nil {
@@ -39,4 +33,16 @@ func FileScanner(root string, exclusions []string) []string {
 	}
 
 	return resultList
+}
+
+func FilterImages(imgSlice []string, extMap map[string]bool) []string {
+	result := []string{}
+	for _, v := range imgSlice {
+		ext := strings.ToLower(filepath.Ext(v))
+
+		if _, exists := extMap[ext]; exists {
+			result = append(result, v)
+		}
+	}
+	return result
 }

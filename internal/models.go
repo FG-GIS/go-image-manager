@@ -18,37 +18,17 @@ type FileData struct {
 	Location string
 }
 
-type ImgExt struct {
-	Name   string
-	Status bool
-}
+func GetExtensionsList(enabled []string) map[string]bool {
+	result := make(map[string]bool)
 
-func GetExtensionsList(enabled []string) []ImgExt {
-	var list []ImgExt
-	var statusFlag = false
-
-	if len(enabled) == 0 {
-		statusFlag = true
+	for _, v := range enabled {
+		result[v] = true
 	}
 
-	for _, ext := range Extensions {
-		list = append(list,
-			ImgExt{
-				Name:   ext,
-				Status: statusFlag,
-			},
-		)
-	}
-
-	if len(enabled) > 0 {
-		for _, ext := range enabled {
-			for i := range list {
-				if ext == list[i].Name {
-					list[i].Status = true
-				}
-			}
+	if enabled == nil {
+		for _, v := range Extensions {
+			result[v] = true
 		}
 	}
-
-	return list
+	return result
 }

@@ -9,13 +9,28 @@ import (
 	"github.com/FG-GIS/go-image-manager/internal"
 )
 
+type stringSlice []string
+
+func (s *stringSlice) String() string {
+	return strings.Join(*s, ",")
+}
+
+func (s *stringSlice) Set(v string) error {
+	*s = strings.Split(v, ",")
+	return nil
+}
+
 func main() {
 	verbose := flag.Bool("verbose", false, "Abilita l'output dettagliato")
 
 	flist := flag.Bool("flist", false, "Stampa i formati accettati")
 
 	path := flag.String("path", ".", "tha path to scan for duplicate images")
-	exclude := flag.String("exclude", "", "name folders you want to exclude")
+	// exclude := flag.String("exclude", "", "name folders you want to exclude")
+	var exclude stringSlice
+	var ext stringSlice
+	flag.Var(&exclude, "exclude", "Nome di cartelle da escludere nella scansione, separate da una virgola (ex.: whatsapp,video)")
+	flag.Var(&ext, "ext", "Estensioni immagini da verificare, separate da una virgola (ex.: .jpg,.png)")
 
 	flag.Parse()
 
@@ -38,12 +53,8 @@ func main() {
 		if *verbose {
 			fmt.Printf("Argomenti rimanenti: %v\n", args)
 		}
-		exSlice := []string{}
-		if *exclude != "" {
-			exSlice = strings.Split(strings.ToLower(*exclude), ",")
-		}
 
-		fileList := internal.FileScanner(*path, exSlice)
+		fileList := internal.FileScanner(*path, exclude)
 		if fileList != nil {
 			fmt.Println(fileList)
 		} else {
