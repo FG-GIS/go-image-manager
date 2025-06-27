@@ -57,7 +57,9 @@ func main() {
 
 		fileList := internal.FileScanner(*path, exclude)
 		if fileList != nil {
-			fmt.Println(fileList)
+			fmt.Println("Lista di file trovati:\n", fileList)
+			filteredList := internal.FilterImages(fileList, internal.GetExtensionsMap(ext))
+			fmt.Println("Lista di file filtrati:\n", filteredList)
 		} else {
 			fmt.Println("Nessun file trovato o errore durante la scansione.")
 		}

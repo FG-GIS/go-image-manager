@@ -16,6 +16,7 @@ type FileData struct {
 	Date     string
 	Device   string
 	Location string
+	Size     int64
 }
 
 func GetExtensionsMap(enabled []string) map[string]bool {

@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"io/fs"
+	"os"
 	"path/filepath"
 	"slices"
 	"strings"
@@ -35,13 +36,23 @@ func FileScanner(root string, exclusions []string) []string {
 	return resultList
 }
 
-func FilterImages(imgSlice []string, extMap map[string]bool) []string {
-	result := []string{}
+func FilterImages(imgSlice []string, extMap map[string]bool) []FileData {
+	result := []FileData{}
 	for _, v := range imgSlice {
 		ext := strings.ToLower(filepath.Ext(v))
 
 		if _, exists := extMap[ext]; exists {
-			result = append(result, v)
+			info, err := os.Stat(v)
+			var size int64
+			if err == nil {
+				size = info.Size()
+			} else {
+				size = 0
+			}
+			result = append(result, FileData{
+				Path: v,
+				Size: size,
+			})
 		}
 	}
 	return result
