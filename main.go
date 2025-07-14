@@ -21,26 +21,27 @@ func (s *stringSlice) Set(v string) error {
 }
 
 func main() {
-	verbose := flag.Bool("verbose", false, "Abilita l'output dettagliato")
+	verbose := flag.Bool("verbose", false, "Enable verbose output")
 
-	flist := flag.Bool("flist", false, "Stampa le estensioni accettate")
+	flist := flag.Bool("flist", false, "Prints out supported img extensions")
 
-	path := flag.String("path", ".", "tha path to scan for duplicate images")
+	path := flag.String("path", ".", "the path to scan for duplicate images")
 	// exclude := flag.String("exclude", "", "name folders you want to exclude")
 	var exclude stringSlice
 	var ext stringSlice = internal.Extensions
 
-	flag.Var(&exclude, "exclude", "Nome di cartelle da escludere nella scansione, separate da una virgola (ex.: whatsapp,video)")
-	flag.Var(&ext, "ext", "Estensioni immagini da verificare, separate da una virgola (ex.: .jpg,.png)")
+	flag.Var(&exclude, "exclude", "Comma separated list of folders to exclude from the analisys (ex.: whatsapp,video)")
+	flag.Var(&ext, "ext", "Comma separated list of extensions to evaluate (ex.: .jpg,.png)")
 
 	flag.Parse()
 
 	if *flist {
 		fmt.Println("Available extensions are:\n", ext)
+		os.Exit(0)
 	}
 
 	args := flag.Args()
-
+	// in teoria utilizzare arg diversi per funzioni diverse: scan, link, delete
 	if len(args) < 1 {
 		fmt.Println("Implementare procedura guidata")
 		os.Exit(0)
@@ -55,15 +56,13 @@ func main() {
 			fmt.Printf("Argomenti rimanenti: %v\n", args)
 		}
 
-		fileList := internal.FileScanner(*path, exclude)
+		fileList := internal.FileScanner(*path, exclude, *verbose)
 		if fileList != nil {
-			fmt.Println("Lista di file trovati:\n", fileList)
+			// fmt.Println("Lista di file trovati:\n", fileList)
 			filteredList := internal.FilterImages(fileList, internal.GetExtensionsMap(ext))
 			fmt.Println("Lista di file filtrati:\n", filteredList)
 		} else {
 			fmt.Println("Nessun file trovato o errore durante la scansione.")
 		}
-	} else {
-		fmt.Println("Nessun path da verificare fornito.")
 	}
 }

@@ -1,16 +1,18 @@
 package internal
 
+// Extensions accepted file extensions for metadata extraction
 var Extensions = []string{
 	".jpg", ".jpeg",
-	".png", ".gif",
-	".webp", ".tif",
-	".tiff", ".bmp",
-	".svg", ".ico",
+	".png", ".cr2",
+	".tif", ".tiff",
 	".avif", ".apng",
-	".cr2", ".nef",
-	".arw",
+	// ".webp",
+	// ".nef", ".bmp",
+	// ".arw", ".gif",
+	// ".svg", ".ico",
 }
 
+// FileData holds metadata information about a file.
 type FileData struct {
 	Path     string
 	Date     string
@@ -19,6 +21,7 @@ type FileData struct {
 	Size     int64
 }
 
+// GetExtensionsMap returns a map of enabled file extensions for image processing.
 func GetExtensionsMap(enabled []string) map[string]bool {
 	result := make(map[string]bool)
 
