@@ -43,17 +43,17 @@ func main() {
 	args := flag.Args()
 	// in teoria utilizzare arg diversi per funzioni diverse: scan, link, delete
 	if len(args) < 1 {
-		fmt.Println("Implementare procedura guidata")
+		fmt.Println("Implement guided procedure.")
 		os.Exit(0)
 	}
 
 	if *verbose {
-		fmt.Printf("Path da verificare: %s\n", *path)
+		fmt.Printf("Path to check: %s\n", *path)
 	}
 
 	if len(args) > 0 {
 		if *verbose {
-			fmt.Printf("Argomenti rimanenti: %v\n", args)
+			fmt.Printf("Leftover args: %v\n", args)
 		}
 
 		fileList := internal.FileScanner(*path, exclude, *verbose)
@@ -62,7 +62,7 @@ func main() {
 			filteredList := internal.FilterImages(fileList, internal.GetExtensionsMap(ext))
 			fmt.Println("Lista di file filtrati:\n", filteredList)
 		} else {
-			fmt.Println("Nessun file trovato o errore durante la scansione.")
+			fmt.Println("No file found, or scan error")
 		}
 	}
 }
