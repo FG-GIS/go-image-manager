@@ -21,15 +21,17 @@ func (s *stringSlice) Set(v string) error {
 }
 
 func main() {
-	verbose := flag.Bool("verbose", false, "Enable verbose output")
-
-	flist := flag.Bool("flist", false, "Prints out supported img extensions")
-
-	path := flag.String("path", ".", "the path to scan for duplicate images")
-	// exclude := flag.String("exclude", "", "name folders you want to exclude")
-	var exclude stringSlice
+	// Definizione delle variabili che conterranno i parametri obbligatori ed opzionali.
+	// bool flags => -flag=true/false
+	// ext => le estensioni supportate
 	var ext stringSlice = internal.Extensions
-
+	// exclude => cartelle da escludere
+	var exclude stringSlice
+	// verbose => flag per attivare l'output testuale per le operazioni in corso
+	verbose := flag.Bool("verbose", false, "Enable verbose output")
+	// extension-list => flag per la stampa dei formati supportati
+	flist := flag.Bool("extension-list", false, "Prints out supported img extensions")
+	path := flag.String("path", ".", "the path to scan for duplicate images")
 	flag.Var(&exclude, "exclude", "Comma separated list of folders to exclude from the analisys (ex.: whatsapp,video)")
 	flag.Var(&ext, "ext", "Comma separated list of extensions to evaluate (ex.: .jpg,.png)")
 
